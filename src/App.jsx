@@ -1,12 +1,33 @@
-import { Button } from '@nextui-org/react'
 import './App.css'
 import Clock from './components/Clock'
+import TodoList from './components/TodoList'
+import { useEffect, useState } from 'react'
+import { addTodo, getTodos } from './services/Api'
+import AddTodo from './components/AddTodo'
 
 function App () {
+  const [todos, setTodos] = useState([])
+  useEffect(() => {
+    const getData = async () => {
+      const todosData = await getTodos()
+      setTodos(todosData)
+    }
+    getData()
+  }, [])
+
+  const handleAddTodo = async (todo) => {
+    await addTodo(todo)
+  }
+
   return (
     <>
+      <TodoList
+        todos={todos}
+      />
       <Clock interval={1000} />
-      <Button className='bg-primary-200'>C'est MON bouton</Button>
+      <AddTodo
+        onAddTodo={handleAddTodo}
+      />
     </>
   )
 }
