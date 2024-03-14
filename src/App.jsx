@@ -1,33 +1,20 @@
 import './App.css'
-import Clock from './components/Clock'
-import TodoList from './components/TodoList'
-import { useEffect, useState } from 'react'
-import { addTodo, getTodos } from './services/Api'
-import AddTodo from './components/AddTodo'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Todos from './pages/Todos'
+import Auth from './pages/Auth'
+import CustomNavbar from './components/CustomNavbar'
 
 function App () {
-  const [todos, setTodos] = useState([])
-  useEffect(() => {
-    const getData = async () => {
-      const todosData = await getTodos()
-      setTodos(todosData)
-    }
-    getData()
-  }, [])
-
-  const handleAddTodo = async (todo) => {
-    await addTodo(todo)
-  }
-
   return (
     <>
-      <TodoList
-        todos={todos}
-      />
-      <Clock interval={1000} />
-      <AddTodo
-        onAddTodo={handleAddTodo}
-      />
+      <CustomNavbar />
+      <BrowserRouter>
+        <Routes>
+          <Route index path='/' element={<Todos />} />
+          <Route path='/Auth' element={<Auth />} />
+        </Routes>
+
+      </BrowserRouter>
     </>
   )
 }

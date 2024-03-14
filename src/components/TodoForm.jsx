@@ -1,12 +1,12 @@
 import { Button, Input, Select, SelectItem, Switch, Textarea } from '@nextui-org/react'
 import { useState } from 'react'
 
-function TodoForm ({ onSubmit }) {
+function TodoForm ({ todoToEdit, onSubmit, onClose }) {
   const [formData, setFormData] = useState({
-    title: 'mon titre',
-    description: 'desc',
-    status: 'TODO',
-    important: true
+    title: todoToEdit?.title || '',
+    description: todoToEdit?.description || '',
+    statut: todoToEdit?.statut[0] || 'TODO',
+    important: todoToEdit?.important || false
   })
 
   const handleChange = event => {
@@ -18,7 +18,8 @@ function TodoForm ({ onSubmit }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (onSubmit) onSubmit(formData)
+    if (onSubmit) onSubmit(formData, todoToEdit?._id)
+    onClose()
   }
 
   return (
@@ -46,12 +47,12 @@ function TodoForm ({ onSubmit }) {
       />
 
       <Select
-        name='status'
-        label='Status'
+        name='statut'
+        label='statut'
         variant='flat'
         onChange={handleChange}
-        value={formData.status}
-        defaultSelectedKeys={[formData.status]}
+        value={formData.statut}
+        defaultSelectedKeys={[formData.statut]}
       >
         <SelectItem key='TODO' value='TODO' textValue='To Do'>To Do </SelectItem>
         <SelectItem key='IN-PROGRESS' value='IN-PROGRESS' textValue='In Progress'>In Progress</SelectItem>
